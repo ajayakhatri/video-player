@@ -3,7 +3,6 @@ const theaterBtn = document.querySelector(".theater-btn")
 const fullScreenBtn = document.querySelector(".full-screen-btn")
 const miniPlayerBtn = document.querySelector(".mini-player-btn")
 const muteBtn = document.querySelector(".mute-btn")
-const captionsBtn = document.querySelector(".captions-btn")
 const speedBtn = document.querySelector(".speed-btn")
 const currentTimeElem = document.querySelector(".current-time")
 const totalTimeElem = document.querySelector(".total-time")
@@ -75,9 +74,7 @@ document.addEventListener("keydown", e => {
     case "l":
       skip(5)
       break
-    case "c":
-      toggleCaptions()
-      break
+  
   }
 })
 
@@ -112,17 +109,12 @@ function toggleScrubbing(e) {
 function handleTimelineUpdate(e) {
   const rect = timelineContainer.getBoundingClientRect()
   const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width
-  const previewImgNumber = Math.max(
-    1,
-    Math.floor((percent * video.duration) / 10)
-  )
-  const previewImgSrc = `assets/previewImgs/preview${previewImgNumber}.jpg`
-  previewImg.src = previewImgSrc
+
+
   timelineContainer.style.setProperty("--preview-position", percent)
 
   if (isScrubbing) {
     e.preventDefault()
-    thumbnailImg.src = previewImgSrc
     timelineContainer.style.setProperty("--progress-position", percent)
   }
 }
@@ -162,17 +154,7 @@ function changePlaybackSpeed() {
   speedBtn.textContent = `${newPlaybackRate}x`
 }
 
-// Captions
-const captions = video.textTracks[0]
-captions.mode = "hidden"
 
-captionsBtn.addEventListener("click", toggleCaptions)
-
-function toggleCaptions() {
-  const isHidden = captions.mode === "hidden"
-  captions.mode = isHidden ? "showing" : "hidden"
-  videoContainer.classList.toggle("captions", isHidden)
-}
 
 // Duration
 video.addEventListener("loadeddata", () => {
