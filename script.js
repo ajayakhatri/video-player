@@ -22,13 +22,10 @@ const playbackSymbolContainer = document.querySelector(
 videoInput.addEventListener("submit", (e) => {
   e.preventDefault();
   const locationInput = document.getElementById("locationInput");
-  console.log(locationInput.value);
   const location = locationInput.value;
   let withoutQuotes = location.replace(/"/g, "");
-  console.log(withoutQuotes);
   video.src = withoutQuotes;
   previewImg.src = withoutQuotes;
-  console.log(video.videoHeight);
 });
 let toshowcontrol = false;
 
@@ -125,7 +122,6 @@ function handleTimelineUpdate(e) {
 speedBtn.addEventListener("click", changePlaybackSpeed);
 
 function increasePlaybackSpeed() {
-  console.log(playbackSymbolContainer);
   playbackSymbolContainer.style.display = "flex";
   let newPlaybackRate = video.playbackRate + 0.25;
   if (newPlaybackRate > 4) newPlaybackRate = 4;
@@ -192,7 +188,6 @@ function skip(duration) {
 muteBtn.addEventListener("click", toggleMute);
 volumeSlider.addEventListener("input", (e) => {
   video.volume = e.target.value;
-  console.log(e.target.value)
   video.muted = e.target.value === 0;
 });
 
