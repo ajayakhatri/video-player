@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -259,7 +261,36 @@ video {
 
 
 
+#locationInput {
+  min-height: 30px;
+}
 
-.preview-img{
+.preview-img {
   display: none !important;
+}
+
+.playbtn {
+  background-color: red;
+  color: wheat;
+  min-height: 30px;
+  border-radius: 5px;
+}
+
+.playback-symbol-container {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  z-index: 2;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: dimgray;
+}
+
+.playback-symbol{
+  font-size: 50px;
+  color: white;
 }

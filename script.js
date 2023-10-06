@@ -12,12 +12,15 @@ const thumbnailImg = document.querySelector(".thumbnail-img")
 const volumeSlider = document.querySelector(".volume-slider")
 const videoContainer = document.querySelector(".video-container")
 const timelineContainer = document.querySelector(".timeline-container")
+const videoInput = document.querySelector("#video-input")
 const video = document.querySelector("video")
 const controls = document.querySelector(".controls")
+const playbackSymbol = document.querySelector(".playback-symbol")
+const playbackSymbolContainer = document.querySelector(".playback-symbol-container")
 
 videoInput.addEventListener("submit", e => {
-  const locationInput = document.getElementById("locationInput")
   e.preventDefault()
+  const locationInput = document.getElementById("locationInput")
   console.log(locationInput.value)
   const location = locationInput.value
   let withoutQuotes = location.replace(/"/g, '');
@@ -128,21 +131,33 @@ function handleTimelineUpdate(e) {
 speedBtn.addEventListener("click", changePlaybackSpeed)
 
 function increasePlaybackSpeed() {
+  console.log(playbackSymbolContainer)
+  playbackSymbolContainer.style.display = "flex"
+  playbackSymbol.innerHTML = ">>"
   let newPlaybackRate = video.playbackRate + 0.25
   if (newPlaybackRate > 4) newPlaybackRate = 4
   video.playbackRate = newPlaybackRate
   speedBtn.textContent = `${newPlaybackRate}x`
+  setTimeout(() => {
+    playbackSymbolContainer.style.display = "none"
+  }, "500");
 }
 
 function decreasePlaybackSpeed() {
+  playbackSymbolContainer.style.display = "flex"
+  playbackSymbol.innerHTML = "<<"
   let newPlaybackRate = video.playbackRate - 0.25
   if (newPlaybackRate <= 0) newPlaybackRate = 0.25
   video.playbackRate = newPlaybackRate
   speedBtn.textContent = `${newPlaybackRate}x`
+  setTimeout(() => {
+    playbackSymbolContainer.style.display = "none"
+  }, "500");
 }
+
 function changePlaybackSpeed() {
   let newPlaybackRate = video.playbackRate + 0.25
-  if (newPlaybackRate > 2) newPlaybackRate = 0.25
+  if (newPlaybackRate > 4) newPlaybackRate = 0.25
   video.playbackRate = newPlaybackRate
   speedBtn.textContent = `${newPlaybackRate}x`
 }
