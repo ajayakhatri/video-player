@@ -256,3 +256,10 @@ video {
 .timeline-container:hover .timeline {
   height: 100%;
 }
+
+
+
+
+.preview-img{
+  display: none !important;
+}
