@@ -1,5 +1,5 @@
 # video-player
-modified from youtube-video-player-clone (by [WebDevSimplified](https://youtu.be/ZeNyjnneq_w?si=huvIbB8wHKb7yGlZ)). 
+modified from youtube-video-player-clone (by ![WebDevSimplified](https://youtu.be/ZeNyjnneq_w?si=huvIbB8wHKb7yGlZ)). 
 
 ## Changes made
 - Added input for video file location
