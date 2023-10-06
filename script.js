@@ -125,9 +125,9 @@ speedBtn.addEventListener("click", changePlaybackSpeed)
 function increasePlaybackSpeed() {
   console.log(playbackSymbolContainer)
   playbackSymbolContainer.style.display = "flex"
-  playbackSymbol.innerHTML = ">>"
   let newPlaybackRate = video.playbackRate + 0.25
   if (newPlaybackRate > 4) newPlaybackRate = 4
+  playbackSymbol.textContent = newPlaybackRate
   video.playbackRate = newPlaybackRate
   speedBtn.textContent = `${newPlaybackRate}x`
   setTimeout(() => {
@@ -137,9 +137,9 @@ function increasePlaybackSpeed() {
 
 function decreasePlaybackSpeed() {
   playbackSymbolContainer.style.display = "flex"
-  playbackSymbol.innerHTML = "<<"
   let newPlaybackRate = video.playbackRate - 0.25
   if (newPlaybackRate <= 0) newPlaybackRate = 0.25
+  playbackSymbol.textContent = newPlaybackRate
   video.playbackRate = newPlaybackRate
   speedBtn.textContent = `${newPlaybackRate}x`
   setTimeout(() => {
@@ -152,6 +152,7 @@ function changePlaybackSpeed() {
   if (newPlaybackRate > 4) newPlaybackRate = 0.25
   video.playbackRate = newPlaybackRate
   speedBtn.textContent = `${newPlaybackRate}x`
+  playbackSymbol.textContent = newPlaybackRate
 }
 
 
