@@ -5,6 +5,8 @@
 }
 
 body {
+  color: white;
+  background-color: rgb(26, 26, 26);
   margin: 0;
   padding: 10px;
 }
@@ -261,9 +263,9 @@ video {
 }
 
 
-
 #locationInput {
   min-height: 30px;
+  background-color: rgb(216, 216, 216);
 }
 
 .preview-img {

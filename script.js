@@ -155,8 +155,6 @@ function changePlaybackSpeed() {
   playbackSymbol.textContent = newPlaybackRate
 }
 
-
-
 // Duration
 video.addEventListener("loadeddata", () => {
   totalTimeElem.textContent = formatDuration(video.duration)
