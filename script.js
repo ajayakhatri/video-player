@@ -13,6 +13,24 @@ const volumeSlider = document.querySelector(".volume-slider")
 const videoContainer = document.querySelector(".video-container")
 const timelineContainer = document.querySelector(".timeline-container")
 const video = document.querySelector("video")
+const controls = document.querySelector(".controls")
+
+videoInput.addEventListener("submit", e => {
+  const locationInput = document.getElementById("locationInput")
+  e.preventDefault()
+  console.log(locationInput.value)
+  const location = locationInput.value
+  let withoutQuotes = location.replace(/"/g, '');
+  console.log(withoutQuotes)
+  video.src = withoutQuotes
+
+})
+let toshowcontrol = false
+
+function togglecontrol() {
+  controls.style.display = toshowcontrol ? "flex" : "none"
+  toshowcontrol = !toshowcontrol
+}
 
 document.addEventListener("keydown", e => {
   const tagName = document.activeElement.tagName.toLowerCase()
@@ -24,6 +42,15 @@ document.addEventListener("keydown", e => {
       if (tagName === "button") return
     case "k":
       togglePlay()
+      break
+    case "x":
+      togglecontrol()
+      break
+    case ">":
+      increasePlaybackSpeed()
+      break
+    case "<":
+      decreasePlaybackSpeed()
       break
     case "f":
       toggleFullScreenMode()
@@ -100,6 +127,19 @@ function handleTimelineUpdate(e) {
 // Playback Speed
 speedBtn.addEventListener("click", changePlaybackSpeed)
 
+function increasePlaybackSpeed() {
+  let newPlaybackRate = video.playbackRate + 0.25
+  if (newPlaybackRate > 4) newPlaybackRate = 4
+  video.playbackRate = newPlaybackRate
+  speedBtn.textContent = `${newPlaybackRate}x`
+}
+
+function decreasePlaybackSpeed() {
+  let newPlaybackRate = video.playbackRate - 0.25
+  if (newPlaybackRate <= 0) newPlaybackRate = 0.25
+  video.playbackRate = newPlaybackRate
+  speedBtn.textContent = `${newPlaybackRate}x`
+}
 function changePlaybackSpeed() {
   let newPlaybackRate = video.playbackRate + 0.25
   if (newPlaybackRate > 2) newPlaybackRate = 0.25
