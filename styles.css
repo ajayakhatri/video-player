@@ -9,6 +9,7 @@ body {
   background-color: rgb(26, 26, 26);
   margin: 0;
   padding: 10px;
+  user-select: none;
 }
 
 .video-container {
@@ -269,7 +270,8 @@ video {
 }
 
 .preview-img {
-  display: none !important;
+  height: 90;
+  width:calc(90*var(--video-aspect));
 }
 
 .playbtn {

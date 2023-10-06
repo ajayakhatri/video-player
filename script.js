@@ -1,266 +1,273 @@
-const playPauseBtn = document.querySelector(".play-pause-btn")
-const theaterBtn = document.querySelector(".theater-btn")
-const fullScreenBtn = document.querySelector(".full-screen-btn")
-const miniPlayerBtn = document.querySelector(".mini-player-btn")
-const muteBtn = document.querySelector(".mute-btn")
-const speedBtn = document.querySelector(".speed-btn")
-const currentTimeElem = document.querySelector(".current-time")
-const totalTimeElem = document.querySelector(".total-time")
-const previewImg = document.querySelector(".preview-img")
-const thumbnailImg = document.querySelector(".thumbnail-img")
-const volumeSlider = document.querySelector(".volume-slider")
-const videoContainer = document.querySelector(".video-container")
-const timelineContainer = document.querySelector(".timeline-container")
-const videoInput = document.querySelector("#video-input")
-const video = document.querySelector("video")
-const controls = document.querySelector(".controls")
-const playbackSymbol = document.querySelector(".playback-symbol")
-const playbackSymbolContainer = document.querySelector(".playback-symbol-container")
+const playPauseBtn = document.querySelector(".play-pause-btn");
+const theaterBtn = document.querySelector(".theater-btn");
+const fullScreenBtn = document.querySelector(".full-screen-btn");
+const miniPlayerBtn = document.querySelector(".mini-player-btn");
+const muteBtn = document.querySelector(".mute-btn");
+const speedBtn = document.querySelector(".speed-btn");
+const currentTimeElem = document.querySelector(".current-time");
+const totalTimeElem = document.querySelector(".total-time");
+const previewImg = document.querySelector(".preview-img");
+const thumbnailImg = document.querySelector(".thumbnail-img");
+const volumeSlider = document.querySelector(".volume-slider");
+const videoContainer = document.querySelector(".video-container");
+const timelineContainer = document.querySelector(".timeline-container");
+const videoInput = document.querySelector("#video-input");
+const video = document.querySelector("#video");
+const controls = document.querySelector(".controls");
+const playbackSymbol = document.querySelector(".playback-symbol");
+const playbackSymbolContainer = document.querySelector(
+  ".playback-symbol-container"
+);
 
-videoInput.addEventListener("submit", e => {
-  e.preventDefault()
-  const locationInput = document.getElementById("locationInput")
-  console.log(locationInput.value)
-  const location = locationInput.value
-  let withoutQuotes = location.replace(/"/g, '');
-  console.log(withoutQuotes)
-  video.src = withoutQuotes
-
-})
-let toshowcontrol = false
+videoInput.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const locationInput = document.getElementById("locationInput");
+  console.log(locationInput.value);
+  const location = locationInput.value;
+  let withoutQuotes = location.replace(/"/g, "");
+  console.log(withoutQuotes);
+  video.src = withoutQuotes;
+  previewImg.src = withoutQuotes;
+  console.log(video.videoHeight);
+});
+let toshowcontrol = false;
 
 function togglecontrol() {
-  controls.style.display = toshowcontrol ? "flex" : "none"
-  toshowcontrol = !toshowcontrol
+  controls.style.display = toshowcontrol ? "flex" : "none";
+  toshowcontrol = !toshowcontrol;
 }
 
-document.addEventListener("keydown", e => {
-  const tagName = document.activeElement.tagName.toLowerCase()
+document.addEventListener("keydown", (e) => {
+  const tagName = document.activeElement.tagName.toLowerCase();
 
-  if (tagName === "input") return
+  if (tagName === "input") return;
 
   switch (e.key.toLowerCase()) {
     case " ":
-      if (tagName === "button") return
+      if (tagName === "button") return;
     case "k":
-      togglePlay()
-      break
+      togglePlay();
+      break;
     case "x":
-      togglecontrol()
-      break
+      togglecontrol();
+      break;
     case ">":
-      increasePlaybackSpeed()
-      break
+      increasePlaybackSpeed();
+      break;
     case "<":
-      decreasePlaybackSpeed()
-      break
+      decreasePlaybackSpeed();
+      break;
     case "f":
-      toggleFullScreenMode()
-      break
+      toggleFullScreenMode();
+      break;
     case "t":
-      toggleTheaterMode()
-      break
+      toggleTheaterMode();
+      break;
     case "i":
-      toggleMiniPlayerMode()
-      break
+      toggleMiniPlayerMode();
+      break;
     case "m":
-      toggleMute()
-      break
+      toggleMute();
+      break;
     case "arrowleft":
     case "j":
-      skip(-5)
-      break
+      skip(-5);
+      break;
     case "arrowright":
     case "l":
-      skip(5)
-      break
-  
+      skip(5);
+      break;
   }
-})
+});
 
 // Timeline
-timelineContainer.addEventListener("mousemove", handleTimelineUpdate)
-timelineContainer.addEventListener("mousedown", toggleScrubbing)
-document.addEventListener("mouseup", e => {
-  if (isScrubbing) toggleScrubbing(e)
-})
-document.addEventListener("mousemove", e => {
-  if (isScrubbing) handleTimelineUpdate(e)
-})
+timelineContainer.addEventListener("mousemove", handleTimelineUpdate);
+timelineContainer.addEventListener("mousedown", toggleScrubbing);
+document.addEventListener("mouseup", (e) => {
+  if (isScrubbing) toggleScrubbing(e);
+});
+document.addEventListener("mousemove", (e) => {
+  if (isScrubbing) handleTimelineUpdate(e);
+});
 
-let isScrubbing = false
-let wasPaused
+let isScrubbing = false;
+let wasPaused;
 function toggleScrubbing(e) {
-  const rect = timelineContainer.getBoundingClientRect()
-  const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width
-  isScrubbing = (e.buttons & 1) === 1
-  videoContainer.classList.toggle("scrubbing", isScrubbing)
+  const rect = timelineContainer.getBoundingClientRect();
+  const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
+  isScrubbing = (e.buttons & 1) === 1;
+  videoContainer.classList.toggle("scrubbing", isScrubbing);
   if (isScrubbing) {
-    wasPaused = video.paused
-    video.pause()
+    wasPaused = video.paused;
+    video.pause();
   } else {
-    video.currentTime = percent * video.duration
-    if (!wasPaused) video.play()
+    video.currentTime = percent * video.duration;
+    if (!wasPaused) video.play();
   }
 
-  handleTimelineUpdate(e)
+  handleTimelineUpdate(e);
 }
 
 function handleTimelineUpdate(e) {
-  const rect = timelineContainer.getBoundingClientRect()
-  const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width
+  const rect = timelineContainer.getBoundingClientRect();
+  const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width;
 
+  previewImg.currentTime = video.duration * percent;
 
-  timelineContainer.style.setProperty("--preview-position", percent)
-
+  timelineContainer.style.setProperty("--preview-position", percent);
   if (isScrubbing) {
-    e.preventDefault()
-    timelineContainer.style.setProperty("--progress-position", percent)
+    e.preventDefault();
+    timelineContainer.style.setProperty("--progress-position", percent);
   }
 }
 
 // Playback Speed
-speedBtn.addEventListener("click", changePlaybackSpeed)
+speedBtn.addEventListener("click", changePlaybackSpeed);
 
 function increasePlaybackSpeed() {
-  console.log(playbackSymbolContainer)
-  playbackSymbolContainer.style.display = "flex"
-  let newPlaybackRate = video.playbackRate + 0.25
-  if (newPlaybackRate > 4) newPlaybackRate = 4
-  playbackSymbol.textContent = newPlaybackRate
-  video.playbackRate = newPlaybackRate
-  speedBtn.textContent = `${newPlaybackRate}x`
+  console.log(playbackSymbolContainer);
+  playbackSymbolContainer.style.display = "flex";
+  let newPlaybackRate = video.playbackRate + 0.25;
+  if (newPlaybackRate > 4) newPlaybackRate = 4;
+  playbackSymbol.textContent = newPlaybackRate;
+  video.playbackRate = newPlaybackRate;
+  speedBtn.textContent = `${newPlaybackRate}x`;
   setTimeout(() => {
-    playbackSymbolContainer.style.display = "none"
+    playbackSymbolContainer.style.display = "none";
   }, "500");
 }
 
 function decreasePlaybackSpeed() {
-  playbackSymbolContainer.style.display = "flex"
-  let newPlaybackRate = video.playbackRate - 0.25
-  if (newPlaybackRate <= 0) newPlaybackRate = 0.25
-  playbackSymbol.textContent = newPlaybackRate
-  video.playbackRate = newPlaybackRate
-  speedBtn.textContent = `${newPlaybackRate}x`
+  playbackSymbolContainer.style.display = "flex";
+  let newPlaybackRate = video.playbackRate - 0.25;
+  if (newPlaybackRate <= 0) newPlaybackRate = 0.25;
+  playbackSymbol.textContent = newPlaybackRate;
+  video.playbackRate = newPlaybackRate;
+  speedBtn.textContent = `${newPlaybackRate}x`;
   setTimeout(() => {
-    playbackSymbolContainer.style.display = "none"
+    playbackSymbolContainer.style.display = "none";
   }, "500");
 }
 
 function changePlaybackSpeed() {
-  let newPlaybackRate = video.playbackRate + 0.25
-  if (newPlaybackRate > 4) newPlaybackRate = 0.25
-  video.playbackRate = newPlaybackRate
-  speedBtn.textContent = `${newPlaybackRate}x`
-  playbackSymbol.textContent = newPlaybackRate
+  let newPlaybackRate = video.playbackRate + 0.25;
+  if (newPlaybackRate > 4) newPlaybackRate = 0.25;
+  video.playbackRate = newPlaybackRate;
+  speedBtn.textContent = `${newPlaybackRate}x`;
+  playbackSymbol.textContent = newPlaybackRate;
 }
 
 // Duration
 video.addEventListener("loadeddata", () => {
-  totalTimeElem.textContent = formatDuration(video.duration)
-})
+  totalTimeElem.textContent = formatDuration(video.duration);
+});
 
 video.addEventListener("timeupdate", () => {
-  currentTimeElem.textContent = formatDuration(video.currentTime)
-  const percent = video.currentTime / video.duration
-  timelineContainer.style.setProperty("--progress-position", percent)
-})
+  currentTimeElem.textContent = formatDuration(video.currentTime);
+  const percent = video.currentTime / video.duration;
+  timelineContainer.style.setProperty("--progress-position", percent);
+});
 
 const leadingZeroFormatter = new Intl.NumberFormat(undefined, {
   minimumIntegerDigits: 2,
-})
+});
 function formatDuration(time) {
-  const seconds = Math.floor(time % 60)
-  const minutes = Math.floor(time / 60) % 60
-  const hours = Math.floor(time / 3600)
+  const seconds = Math.floor(time % 60);
+  const minutes = Math.floor(time / 60) % 60;
+  const hours = Math.floor(time / 3600);
   if (hours === 0) {
-    return `${minutes}:${leadingZeroFormatter.format(seconds)}`
+    return `${minutes}:${leadingZeroFormatter.format(seconds)}`;
   } else {
     return `${hours}:${leadingZeroFormatter.format(
       minutes
-    )}:${leadingZeroFormatter.format(seconds)}`
+    )}:${leadingZeroFormatter.format(seconds)}`;
   }
 }
 
 function skip(duration) {
-  video.currentTime += duration
+  video.currentTime += duration;
 }
 
 // Volume
-muteBtn.addEventListener("click", toggleMute)
-volumeSlider.addEventListener("input", e => {
-  video.volume = e.target.value
-  video.muted = e.target.value === 0
-})
+muteBtn.addEventListener("click", toggleMute);
+volumeSlider.addEventListener("input", (e) => {
+  video.volume = e.target.value;
+  console.log(e.target.value)
+  video.muted = e.target.value === 0;
+});
 
 function toggleMute() {
-  video.muted = !video.muted
+  video.muted = !video.muted;
 }
 
 video.addEventListener("volumechange", () => {
-  volumeSlider.value = video.volume
-  let volumeLevel
+  volumeSlider.value = video.volume;
+  let volumeLevel;
   if (video.muted || video.volume === 0) {
-    volumeSlider.value = 0
-    volumeLevel = "muted"
+    volumeSlider.value = 0;
+    volumeLevel = "muted";
   } else if (video.volume >= 0.5) {
-    volumeLevel = "high"
+    volumeLevel = "high";
   } else {
-    volumeLevel = "low"
+    volumeLevel = "low";
   }
 
-  videoContainer.dataset.volumeLevel = volumeLevel
-})
+  videoContainer.dataset.volumeLevel = volumeLevel;
+});
 
 // View Modes
-theaterBtn.addEventListener("click", toggleTheaterMode)
-fullScreenBtn.addEventListener("click", toggleFullScreenMode)
-miniPlayerBtn.addEventListener("click", toggleMiniPlayerMode)
+theaterBtn.addEventListener("click", toggleTheaterMode);
+fullScreenBtn.addEventListener("click", toggleFullScreenMode);
+miniPlayerBtn.addEventListener("click", toggleMiniPlayerMode);
 
 function toggleTheaterMode() {
-  videoContainer.classList.toggle("theater")
+  videoContainer.classList.toggle("theater");
 }
 
 function toggleFullScreenMode() {
   if (document.fullscreenElement == null) {
-    videoContainer.requestFullscreen()
+    videoContainer.requestFullscreen();
   } else {
-    document.exitFullscreen()
+    document.exitFullscreen();
   }
 }
 
 function toggleMiniPlayerMode() {
   if (videoContainer.classList.contains("mini-player")) {
-    document.exitPictureInPicture()
+    document.exitPictureInPicture();
   } else {
-    video.requestPictureInPicture()
+    video.requestPictureInPicture();
   }
 }
 
 document.addEventListener("fullscreenchange", () => {
-  videoContainer.classList.toggle("full-screen", document.fullscreenElement)
-})
+  videoContainer.classList.toggle("full-screen", document.fullscreenElement);
+});
 
 video.addEventListener("enterpictureinpicture", () => {
-  videoContainer.classList.add("mini-player")
-})
+  videoContainer.classList.add("mini-player");
+});
 
 video.addEventListener("leavepictureinpicture", () => {
-  videoContainer.classList.remove("mini-player")
-})
+  videoContainer.classList.remove("mini-player");
+});
 
 // Play/Pause
-playPauseBtn.addEventListener("click", togglePlay)
-video.addEventListener("click", togglePlay)
+playPauseBtn.addEventListener("click", togglePlay);
+video.addEventListener("click", togglePlay);
 
 function togglePlay() {
-  video.paused ? video.play() : video.pause()
+  previewImg.style.setProperty(
+    "--video-aspect",
+    video.videoWidth / video.videoHeight
+  );
+  video.paused ? video.play() : video.pause();
 }
 
 video.addEventListener("play", () => {
-  videoContainer.classList.remove("paused")
-})
+  videoContainer.classList.remove("paused");
+});
 
 video.addEventListener("pause", () => {
-  videoContainer.classList.add("paused")
-})
+  videoContainer.classList.add("paused");
+});
