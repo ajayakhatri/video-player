@@ -3,6 +3,6 @@ modified from youtube-video-player-clone by [WebDevSimplified](https://youtu.be/
 
 ## Changes made
 - Added input for video file location
-- Added shortcuts for playback speed changes
+- Added shortcuts for playback speed changes and volume change
 - Added visibility toggle for control bar with key `x`
 - Made body theme dark
