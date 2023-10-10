@@ -36,9 +36,7 @@ function togglecontrol() {
 
 document.addEventListener("keydown", (e) => {
   const tagName = document.activeElement.tagName.toLowerCase();
-
   if (tagName === "input") return;
-
   switch (e.key.toLowerCase()) {
     case " ":
       if (tagName === "button") return;
@@ -47,6 +45,12 @@ document.addEventListener("keydown", (e) => {
       break;
     case "x":
       togglecontrol();
+      break;
+    case "arrowup":
+      changevolume("up");
+      break;
+    case "arrowdown":
+      changevolume("down");
       break;
     case ">":
       increasePlaybackSpeed();
@@ -121,28 +125,31 @@ function handleTimelineUpdate(e) {
 // Playback Speed
 speedBtn.addEventListener("click", changePlaybackSpeed);
 
-function increasePlaybackSpeed() {
+
+function showLabel(toshow, top = "10%", left = "45%") {
+  playbackSymbolContainer.style.setProperty("--top", top);
+  playbackSymbolContainer.style.setProperty("--left", left);
   playbackSymbolContainer.style.display = "flex";
-  let newPlaybackRate = video.playbackRate + 0.25;
-  if (newPlaybackRate > 4) newPlaybackRate = 4;
-  playbackSymbol.textContent = newPlaybackRate;
-  video.playbackRate = newPlaybackRate;
-  speedBtn.textContent = `${newPlaybackRate}x`;
+  playbackSymbol.textContent = toshow;
   setTimeout(() => {
     playbackSymbolContainer.style.display = "none";
   }, "500");
 }
 
-function decreasePlaybackSpeed() {
-  playbackSymbolContainer.style.display = "flex";
-  let newPlaybackRate = video.playbackRate - 0.25;
-  if (newPlaybackRate <= 0) newPlaybackRate = 0.25;
-  playbackSymbol.textContent = newPlaybackRate;
+function increasePlaybackSpeed() {
+  let newPlaybackRate = video.playbackRate + 0.25;
+  if (newPlaybackRate > 4) newPlaybackRate = 4;
   video.playbackRate = newPlaybackRate;
   speedBtn.textContent = `${newPlaybackRate}x`;
-  setTimeout(() => {
-    playbackSymbolContainer.style.display = "none";
-  }, "500");
+  showLabel(`${newPlaybackRate}x`)
+}
+
+function decreasePlaybackSpeed() {
+  let newPlaybackRate = video.playbackRate - 0.25;
+  if (newPlaybackRate <= 0) newPlaybackRate = 0.25;
+  video.playbackRate = newPlaybackRate;
+  speedBtn.textContent = `${newPlaybackRate}x`;
+  showLabel(`${newPlaybackRate}x`)
 }
 
 function changePlaybackSpeed() {
@@ -150,7 +157,7 @@ function changePlaybackSpeed() {
   if (newPlaybackRate > 4) newPlaybackRate = 0.25;
   video.playbackRate = newPlaybackRate;
   speedBtn.textContent = `${newPlaybackRate}x`;
-  playbackSymbol.textContent = newPlaybackRate;
+  showLabel(`${newPlaybackRate}x`)
 }
 
 // Duration
@@ -181,11 +188,33 @@ function formatDuration(time) {
 }
 
 function skip(duration) {
+  if (duration < 0) {
+    showLabel(`<< ${-1 * duration}sec`, "50%", "15%")
+  } else {
+    showLabel(`${duration}sec >>`, "50%", "75%")
+  }
   video.currentTime += duration;
 }
 
 // Volume
 muteBtn.addEventListener("click", toggleMute);
+
+function changevolume(key) {
+  let newVolume = video.volume
+  if (key == "up") {
+    newVolume += 0.05
+  } else if (key == "down") {
+    newVolume -= 0.05
+  }
+  if (newVolume > 1) {
+    newVolume = 1;
+  } else if (newVolume <= 0) {
+    newVolume = 0;
+  }
+
+  video.volume = newVolume;
+  showLabel(`${Math.round(newVolume * 100)}%`)
+}
 volumeSlider.addEventListener("input", (e) => {
   video.volume = e.target.value;
   video.muted = e.target.value === 0;
