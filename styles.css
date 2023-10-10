@@ -283,8 +283,8 @@ video {
 
 .playback-symbol-container {
   position: absolute;
-  top: var(--top, 10%);
-  left: var(--left, 45%);
+  top: var(--top);
+  left: var(--left);
   z-index: 2;
   height: 50px;
   width: 100px;
