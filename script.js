@@ -24,6 +24,15 @@ videoInput.addEventListener("submit", (e) => {
   const locationInput = document.getElementById("locationInput");
   const location = locationInput.value;
   let withoutQuotes = location.replace(/"/g, "");
+
+  const match = withoutQuotes.match(/[^\\]*$/);
+  const filename = match[0];
+
+  if (filename) {
+    document.title = filename + " - Video Player";
+  } else {
+    document.title = "Video Player";
+  }
   video.src = withoutQuotes;
   previewImg.src = withoutQuotes;
 });
